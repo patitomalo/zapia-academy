@@ -3,7 +3,7 @@
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbzcCBuzSi33HGQiUM3ke3RUJWOi5DuEiXCY-XiICKYd-2fh47PTFe4DV-pdZSlR_ho/exec";
   var EVENT = {
     id: "zapia-academy-1",
-    title: "Zapia Academy #1 · 5 pasos para que tu asistente de IA empiece a trabajar por vos",
+    title: "Zapia Academy #1 · 5 pasos para que tu asistente de IA empiece a trabajar por ti",
     startUTC: "2026-10-28T22:00:00Z", endUTC: "2026-10-28T22:30:00Z", tz: "America/Montevideo"
   };
   function $(id){return document.getElementById(id);}
@@ -17,7 +17,7 @@
   dlg.addEventListener('click',function(e){ if(e.target===dlg) close(); });
   // Calendario
   var fmt=function(s){return s.replace(/[-:]/g,'').replace('.000','');};
-  var cal='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(EVENT.title)+'&dates='+fmt(EVENT.startUTC)+'/'+fmt(EVENT.endUTC)+'&details='+encodeURIComponent('Webinar en vivo. El link de acceso llega por mail antes del evento.')+'&ctz='+EVENT.tz;
+  var cal='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(EVENT.title)+'&dates='+fmt(EVENT.startUTC)+'/'+fmt(EVENT.endUTC)+'&details='+encodeURIComponent('Webinar en vivo. El link de acceso llega por correo antes del evento.')+'&ctz='+EVENT.tz;
   document.querySelectorAll('[data-cal]').forEach(function(a){a.href=cal;});
   // Cuenta regresiva
   document.querySelectorAll('[data-countdown]').forEach(function(el){
@@ -31,9 +31,9 @@
   function setErr(k,msg){var e=$('e-'+k),i=$('r-'+k); if(e) e.textContent=msg||''; if(i) i.setAttribute('aria-invalid',msg?'true':'false');}
   function validate(){
     var ok=true, n=$('r-name').value.trim(), m=$('r-email').value.trim(), c=$('r-country').value;
-    if(n.length<2){setErr('name','Escribí tu nombre.');ok=false;} else setErr('name');
-    if(!isEmail(m)){setErr('email','Ese correo no parece válido. Revisalo: ahí te mandamos el link.');ok=false;} else setErr('email');
-    if(!c){setErr('country','Elegí tu país.');ok=false;} else setErr('country');
+    if(n.length<2){setErr('name','Escribe tu nombre.');ok=false;} else setErr('name');
+    if(!isEmail(m)){setErr('email','Ese correo no parece válido. Revísalo: ahí te enviamos el link.');ok=false;} else setErr('email');
+    if(!c){setErr('country','Elige tu país.');ok=false;} else setErr('country');
     return ok;
   }
   form.addEventListener('submit',function(ev){
@@ -43,7 +43,7 @@
     btn.disabled=true; btn.textContent='Enviando…';
     var data={event:EVENT.id,name:$('r-name').value.trim(),email:$('r-email').value.trim(),country:$('r-country').value,utm:utm,page:location.href,ts:new Date().toISOString()};
     function done(){ $('regFormState').hidden=true; $('regDone').hidden=false; try{localStorage.setItem('za-reg-'+EVENT.id,'1');}catch(e){} }
-    function fail(){ btn.disabled=false; btn.textContent='Registrarme'; setErr('email','No pudimos enviar el registro. Probá de nuevo en un momento.'); }
+    function fail(){ btn.disabled=false; btn.textContent='Registrarme'; setErr('email','No pudimos enviar el registro. Inténtalo de nuevo en un momento.'); }
     if(!ENDPOINT){ console.log('Modo prueba, registro no enviado:',data); setTimeout(done,500); return; }
     fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}).then(done).catch(fail);
   });
