@@ -1,6 +1,6 @@
 /* Zapia Academy · registro. Pegar la URL /exec del Web App de Google Apps Script en ENDPOINT (ver apps-script/SETUP.md). Vacío = modo prueba. */
 (function(){
-  var ENDPOINT = "";
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbzcCBuzSi33HGQiUM3ke3RUJWOi5DuEiXCY-XiICKYd-2fh47PTFe4DV-pdZSlR_ho/exec";
   var EVENT = {
     id: "zapia-academy-1",
     title: "Zapia Academy #1 · 5 pasos para que tu asistente de IA empiece a trabajar por vos",
