@@ -7,6 +7,10 @@
 function doPost(e) {
   try {
     var b = JSON.parse(e.postData.contents || '{}');
+    var email = String(b.email || '').trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/.test(email) || /\.\./.test(email)) {
+      return ContentService.createTextOutput(JSON.stringify({ ok: false, error: 'email inválido' })).setMimeType(ContentService.MimeType.JSON);
+    }
     var sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     if (sh.getLastRow() === 0) {
       sh.appendRow(['Fecha', 'Nombre', 'Email', 'País', 'Webinar', 'Origen (UTM)', 'Página']);
@@ -16,7 +20,7 @@ function doPost(e) {
     sh.appendRow([
       new Date(),
       String(b.name || '').slice(0, 120),
-      String(b.email || '').slice(0, 160).toLowerCase(),
+      email.slice(0, 160),
       String(b.country || '').slice(0, 60),
       String(b.event || '').slice(0, 60),
       String(b.utm || '').slice(0, 300),

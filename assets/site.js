@@ -26,12 +26,13 @@
   });
   // UTM
   var utm=''; try{var q=new URLSearchParams(location.search),u=[];['utm_source','utm_medium','utm_campaign','utm_content','ref'].forEach(function(k){if(q.get(k))u.push(k+'='+q.get(k));}); utm=u.join('&');}catch(e){}
-  // Validación
+  // Validación. Email: una sola @, sin espacios, dominio con punto y terminación de letras, sin puntos seguidos.
+  function isEmail(v){ v=String(v||'').trim(); if(v.length>160) return false; if(!/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v)) return false; if(/\.\./.test(v)) return false; var d=v.split('@')[1]; if(d.indexOf('.')<1||/^[-.]|[-.]$/.test(d)) return false; return true; }
   function setErr(k,msg){var e=$('e-'+k),i=$('r-'+k); if(e) e.textContent=msg||''; if(i) i.setAttribute('aria-invalid',msg?'true':'false');}
   function validate(){
     var ok=true, n=$('r-name').value.trim(), m=$('r-email').value.trim(), c=$('r-country').value;
     if(n.length<2){setErr('name','Escribí tu nombre.');ok=false;} else setErr('name');
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(m)){setErr('email','Revisá el mail: ahí te mandamos el link.');ok=false;} else setErr('email');
+    if(!isEmail(m)){setErr('email','Ese correo no parece válido. Revisalo: ahí te mandamos el link.');ok=false;} else setErr('email');
     if(!c){setErr('country','Elegí tu país.');ok=false;} else setErr('country');
     return ok;
   }
